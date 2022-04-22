@@ -106,10 +106,10 @@ const AddProject = () => {
       <h1>Add Projects</h1>
       <p>Enter Data Here!</p>
       <form onSubmit={onSubmit}>
-        <input type="text" placeholder="Enter Title.." value={formData.title} onChange={(e)=> setFormData((prev)=> ({...prev, title:e.target.value}))}/>
-        <input type="text" placeholder="Enter Category..." value={formData.catagery} onChange={(e)=> setFormData((prev)=> ({...prev, catagery:e.target.value}))}/>
-        <input type="file" accept=".jpg, .png, .jpeg, .gif" onChange={(e)=> setImages((prev)=> (e.target.files))} />
-        <input type="text" placeholder="Enter File Link..." value={formData.link} onChange={(e)=> setFormData((prev)=> ({...prev, link:e.target.value}))}/>
+        <input type="text" required={true} placeholder="Enter Title.." value={formData.title} onChange={(e)=> setFormData((prev)=> ({...prev, title:e.target.value}))}/>
+        <input type="text" required={true} placeholder="Enter Category..." value={formData.catagery} onChange={(e)=> setFormData((prev)=> ({...prev, catagery:e.target.value}))}/>
+        <input type="file" required={true} accept=".jpg, .png, .jpeg, .gif" onChange={(e)=> setImages((prev)=> (e.target.files))} />
+        <input type="text" required={true} placeholder="Enter File Link..." value={formData.link} onChange={(e)=> setFormData((prev)=> ({...prev, link:e.target.value}))}/>
       <button>Add Project</button>
       </form>
     </div>

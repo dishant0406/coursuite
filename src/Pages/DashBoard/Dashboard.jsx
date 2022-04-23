@@ -6,13 +6,14 @@ import Loader from '../../Components/Loader/Loader'
 import {SearchAlt} from '@styled-icons/boxicons-regular'
 import RepoCard from '../../Components/RepoCard/RepoCard'
 import Select from 'react-select';
+import useStateCallback from '../../Hooks/useStateCallback'
 
 
 const Dashboard = () => {
   const [repos, setRepos] = React.useState([]);
-  const [categories,setCategory] = React.useState([{value: '', label: 'All'}]);
+  const [categories,setCategory] = React.useState([{value: '', label: 'All Category'}]);
   const [loading, setLoading] = React.useState(false);
-  const [searchtitle, setTitle] = React.useState('')
+  const [searchtitle, setTitle] = useStateCallback('')
   const [cat, setCat] = React.useState('')
 
   React.useEffect(() => {
@@ -62,13 +63,22 @@ const Dashboard = () => {
     setCat(selectedOption.value)
     console.log(`Option selected:`, selectedOption);
 
+    if(cat != ''){
+      setTitle('');
+    }
+
   }
 
   const handleInputChange = (e)=>{
-    setTitle(e.target.value)
-    if(e.target.value!=''){
-      setCat('')
-    }
+    setTitle(
+      e.target.value,
+      s => {
+        if(e.target.value!=''){
+          setCat('')
+        }
+      }
+      )
+    
   }
 
   if(loading){
@@ -89,7 +99,10 @@ const Dashboard = () => {
         </button>
       </div>
     </div>
-    {categories!=[] && <Select options = {categories} onChange={handleChange}/>}
+    {categories!=[] && <Select options = {categories} onChange={handleChange} value = {
+       categories.filter(option => 
+          option.label === 'All Category')
+    }/>}
     </div>
     
     <div className='repo'>

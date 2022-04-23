@@ -101,7 +101,7 @@ const Dashboard = () => {
     </div>
     {categories!=[] && <Select options = {categories} onChange={handleChange} value = {
        categories.filter(option => 
-          option.label === 'All Category')
+          option.value === cat)
     }/>}
     </div>
     

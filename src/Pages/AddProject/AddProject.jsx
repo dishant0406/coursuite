@@ -6,7 +6,7 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import Loader from '../../Components/Loader/Loader'
 import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
 import { db } from '../../Components/Firebase/firebase.config'
-import {addDoc, collection, serverTimestamp} from 'firebase/firestore'
+import {addDoc, collection, serverTimestamp, doc, getDoc, setDoc} from 'firebase/firestore'
 
 
 const AddProject = () => {
@@ -89,6 +89,11 @@ const AddProject = () => {
     const formDataCopy = {...formData, timestamp:serverTimestamp(), imageUrl: imageURL[0]}
 
     const docRef = await addDoc(collection(db, 'Repos'), formDataCopy)
+
+    const catData = {category: formData.catagery.toLowerCase()}
+    await setDoc(doc(db, "category", formData.catagery.toLowerCase()), catData);
+
+    
 
     setLoading(false);
     toast.success('Added Successfully')

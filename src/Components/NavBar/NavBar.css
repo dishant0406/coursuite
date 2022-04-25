@@ -82,6 +82,7 @@ body{
     top: 75px;
     left: 0px;
     border-radius:10px;
+    z-index: 100;
   }
   .nav > .nav-links > a {
     display: block;

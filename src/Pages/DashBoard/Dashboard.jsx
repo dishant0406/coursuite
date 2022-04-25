@@ -13,7 +13,7 @@ const Dashboard = () => {
   const [repos, setRepos] = React.useState([]);
   const [categories,setCategory] = React.useState([{value: '', label: 'All Category'}]);
   const [loading, setLoading] = React.useState(false);
-  const [searchtitle, setTitle] = useStateCallback('')
+  const [searchtitle, setTitle] = React.useState('')
   const [cat, setCat] = React.useState('')
 
   React.useEffect(() => {
@@ -59,26 +59,23 @@ const Dashboard = () => {
     
   }, [])
 
-  const handleChange = (selectedOption) => {
-    setCat(selectedOption.value)
-    console.log(`Option selected:`, selectedOption);
 
+  React.useEffect(() => {
     if(cat != ''){
       setTitle('');
     }
+  }, [cat])
+  
 
+  const handleChange = (selectedOption) => {
+    setCat(selectedOption.value)
   }
 
   const handleInputChange = (e)=>{
-    setTitle(
-      e.target.value,
-      s => {
-        if(e.target.value!=''){
-          setCat('')
-        }
-      }
-      )
-    
+    setTitle(e.target.value)
+    if(e.target.value!=''){
+      setCat('')
+    }
   }
 
   if(loading){

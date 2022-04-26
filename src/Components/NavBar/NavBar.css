@@ -7,7 +7,7 @@ body{
 .nav {
   height: 50px;
   border-radius:10px;
-  background-color: #212020;
+  background-color: #404040;
   position: relative;
   padding:10px;
   font-family: 'Poppins', sans-serif;
@@ -36,26 +36,40 @@ body{
 
 .nav > .nav-links > a {
   display: inline-block;
-  padding: 13px 30px 13px 10px;
+  padding: 13px;
   text-decoration: none;
   color: #efefef;
 }
 
 .nav > .nav-links > a:hover {
   background-color: rgba(0, 0, 0, 0.3);
+  border-radius:10px;
 }
 
 .nav > #nav-check {
   display: none;
 }
 
-@media (max-width:600px) {
+.css-b62m3t-container{
+  display:none;
+}
+
+@media (max-width:840px) {
   .nav > .nav-btn {
     display: inline-block;
     position: absolute;
     right: 0px;
     top: 8px;
   }
+
+  .sidebar{
+    display: none;
+  }
+
+  .css-b62m3t-container{
+    display:block;
+  }
+
   .nav > .nav-btn > label {
     display: inline-block;
     width: 50px;
@@ -75,7 +89,7 @@ body{
     position: absolute;
     display: block;
     width: 100%;
-    background-color: #212020;
+    background-color: #404040;
     height: 0px;
     transition: all 0.3s ease-in;
     overflow-x: hidden;
@@ -92,7 +106,7 @@ body{
     height: 0px;
   }
   .nav > #nav-check:checked ~ .nav-links {
-    height: calc(50vh - 50px);
+    height: calc(35vh - 50px);
     overflow-y: auto;
   }
 }

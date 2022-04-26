@@ -68,9 +68,9 @@ const SignUp = () => {
       <h1>Hi.. Let's Start!</h1>
       <p>Register Here!</p>
       <form onSubmit={onnSubmit}>
-        <input type="text" placeholder="Enter Username..." value={username} onChange={e=> setName(e.target.value)}/>
-        <input type="text" placeholder="Enter Email..." value={email} onChange={e=> setEmail(e.target.value)}/>
-        <input type="password" placeholder="Password..." value={password} onChange={e=> setPassword(e.target.value)} />
+        <input type="text" placeholder="*Enter Username..." required value={username} onChange={e=> setName(e.target.value)}/>
+        <input type="text" placeholder="*Enter Email..." required value={email} onChange={e=> setEmail(e.target.value)}/>
+        <input type="password" placeholder="*Password...(At least 6 characters)" required value={password} onChange={e=> setPassword(e.target.value)} />
       <button>{!loading? `Sign Up` : 'Loading..'} </button>
       </form>
       <div className="not-member">

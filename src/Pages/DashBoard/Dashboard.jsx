@@ -7,6 +7,8 @@ import {SearchAlt} from '@styled-icons/boxicons-regular'
 import RepoCard from '../../Components/RepoCard/RepoCard'
 import Select from 'react-select';
 import useStateCallback from '../../Hooks/useStateCallback'
+import SideBar from '../../Components/SideBar/SideBar'
+import Paagination from '../../Components/Pagination/Pagination'
 
 
 const Dashboard = () => {
@@ -15,7 +17,9 @@ const Dashboard = () => {
   const [loading, setLoading] = React.useState(false);
   const [searchtitle, setTitle] = React.useState('')
   const [cat, setCat] = React.useState('')
-
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const [postsPerPage, setPostsPerPage] = React.useState(3)
+  
   React.useEffect(() => {
 
 
@@ -23,8 +27,9 @@ const Dashboard = () => {
       try{
         setLoading(true);
         const querySnapshot = await query(collection(db, "Repos"));
+        setRepos([])
         var re = [];
-
+        var res = [];
         const unsubscribe = onSnapshot(querySnapshot, (snap) => {
           snap.forEach((doc) => {
             return re.push({
@@ -36,16 +41,21 @@ const Dashboard = () => {
         })
 
         const querySnapshot2 = await query(collection(db, "category"));
-        var res = [];
+        
 
         const unsubscribe2 = onSnapshot(querySnapshot2, (snap) => {
           snap.forEach((doc) => {
             
             return res.push({ value: doc.id, label: doc.id })
           });
-          setCategory((prev)=> [...prev, ...res]);
+          setCategory([{value: '', label: 'All Category'}, ...res]);
+
           setLoading(false)
         })
+
+        
+          setLoading(false)
+        
         
       }
       catch(err){
@@ -65,10 +75,16 @@ const Dashboard = () => {
       setTitle('');
     }
   }, [cat])
+
+
   
 
   const handleChange = (selectedOption) => {
     setCat(selectedOption.value)
+  }
+
+  const paginate = (number) => {
+    setCurrentPage(number);
   }
 
   const handleInputChange = (e)=>{
@@ -81,9 +97,13 @@ const Dashboard = () => {
   if(loading){
     return (<Loader/>)
   }
-  
+
   let filterNames =repos.filter(animals => animals.data.catagery.toLowerCase().includes(cat.toLocaleLowerCase())); 
   filterNames =filterNames.filter(animals => animals.data.title.toLowerCase().includes(searchtitle.toLocaleLowerCase())); 
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage
+  const currentPosts = filterNames.slice(indexOfFirstPost, indexOfLastPost)
 
   return (
     <>
@@ -91,9 +111,6 @@ const Dashboard = () => {
     <div className="containerrr">
       <div className="search-box">
         <input type="text" className="search-input" placeholder="Search Title.." value={searchtitle} onChange={handleInputChange}/>
-        <button className="search-button">
-          <SearchAlt/>
-        </button>
       </div>
     </div>
     {categories!=[] && <Select options = {categories} onChange={handleChange} value = {
@@ -101,15 +118,25 @@ const Dashboard = () => {
           option.value === cat)
     }/>}
     </div>
+    <div className="dash">
     
     <div className='repo'>
+    <div className="sidebar">
+       {categories.map((cate)=>{
+        return (
+          <div key={cate.label} onClick={()=>{setCat(cate.value)}}>{cate.label.toUpperCase()}</div>
+        )
+      })}
+    </div>
       <div className="repocontainer">
-        {filterNames.map((el)=>{
+        {currentPosts.map((el)=>{
           return (
-            <RepoCard key={el.id} data={el.data}/>
-          )
-        })}
+            <RepoCard key={el.id} data={el.data} id={el.id}/>
+            )
+          })}
       </div>
+      </div>
+      <Paagination postsPerPage={postsPerPage} currentPage={currentPage} totalPosts={filterNames.length} paginate={paginate}/>
     </div>
     </>
   )

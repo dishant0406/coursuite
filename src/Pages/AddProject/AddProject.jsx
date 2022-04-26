@@ -6,8 +6,9 @@ import {getAuth, onAuthStateChanged} from 'firebase/auth'
 import Loader from '../../Components/Loader/Loader'
 import {getStorage, ref, uploadBytesResumable, getDownloadURL} from 'firebase/storage'
 import { db } from '../../Components/Firebase/firebase.config'
-import {addDoc, collection, serverTimestamp, doc, getDoc, setDoc} from 'firebase/firestore'
-
+import {addDoc, collection, serverTimestamp, doc, getDoc, setDoc, query, onSnapshot} from 'firebase/firestore'
+import CreatableSelect from 'react-select/creatable';
+import { ActionMeta, OnChangeValue } from 'react-select';
 
 const AddProject = () => {
   const [formData, setFormData] = React.useState({
@@ -21,7 +22,8 @@ const AddProject = () => {
   const history = useHistory();
   const auth = getAuth();
   const isMounted = useRef(true);
-
+  const [value,setValue] = React.useState(undefined);
+  const [categories,setCategory] = React.useState([]);
   React.useEffect(() => {
     if(isMounted) {
       onAuthStateChanged(auth, (user)=>{
@@ -35,7 +37,43 @@ const AddProject = () => {
     return ()=>{
       isMounted.current = false;
     }
+
   }, [isMounted])
+
+  React.useEffect(() => {
+
+
+    const fetchListing = async () =>{
+      try{
+        setLoading(true);
+        var res = [];
+
+        const querySnapshot2 = await query(collection(db, "category"));
+        
+        const unsubscribe2 = onSnapshot(querySnapshot2, (snap) => {
+          snap.forEach((doc) => {
+            
+            return res.push({ value: doc.id, label: doc.id })
+          });
+          setCategory([...res]);
+          console.log(categories);
+          setLoading(false)
+        })
+
+
+        
+        
+      }
+      catch(err){
+        setLoading(false)
+        console.log(err)
+      }
+    }
+
+    fetchListing()
+  
+    
+  }, [])
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -101,6 +139,16 @@ const AddProject = () => {
 
   }
 
+  const handleChange = (e)=>{
+     if(e !== null){
+      setFormData((prev)=> ({...prev, catagery:e.value}))
+      setValue(e)
+     }
+     if(e===null){
+      setFormData((prev)=> ({...prev, catagery:''}))
+     }
+  }
+
   if(loading){
     return <Loader/>
   }
@@ -112,7 +160,18 @@ const AddProject = () => {
       <p>Enter Data Here!</p>
       <form onSubmit={onSubmit}>
         <input type="text" required={true} placeholder="*Enter Title.." value={formData.title} onChange={(e)=> setFormData((prev)=> ({...prev, title:e.target.value}))}/>
-        <input type="text" required={true} placeholder="*Enter Category..." value={formData.catagery} onChange={(e)=> setFormData((prev)=> ({...prev, catagery:e.target.value}))}/>
+        {/* <input type="text" required={true} placeholder="*Enter Category..." value={formData.catagery} onChange={(e)=> setFormData((prev)=> ({...prev, catagery:e.target.value}))}/> */}
+        <div className="catdiv">
+        {categories && <CreatableSelect
+        isClearable
+        isDisabled={loading}
+        // isLoading={loading}
+        onChange={handleChange}
+        placeholder="Select Category(Required)"
+        options={categories}
+        
+      />}
+        </div>
         <input type="file" required={true} className="custom-file-input" accept=".jpg, .png, .jpeg, .gif" onChange={(e)=> setImages((prev)=> (e.target.files))} />
         <input type="text" required={true} placeholder="*Enter File Link..." value={formData.link} onChange={(e)=> setFormData((prev)=> ({...prev, link:e.target.value}))}/>
       <button>Add Project</button>

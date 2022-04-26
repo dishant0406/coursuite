@@ -11,20 +11,21 @@ import onGoggleClick from '../../Components/Functions/Oauth'
 const SignIn = () => {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [loading,setLoading] = React.useState(false);
   let history = useHistory();
   const {setUser} = React.useContext(UserContext);
 
   const onnSubmit = async (e)=>{
     e.preventDefault();
+    setLoading(true);
 
     try{
       const auth = getAuth();
 
       const userCreadential = await signInWithEmailAndPassword(auth, email, password);
 
-      
-
       if(userCreadential.user){
+        setLoading(false);
         toast.success('Login Successfully!')
         setUser(userCreadential.user);
         history.push("/");
@@ -32,6 +33,7 @@ const SignIn = () => {
     }
     catch(error){
       toast.error(error.message)
+      setLoading(false);
     }
   }
 
@@ -43,7 +45,7 @@ const SignIn = () => {
       <form onSubmit={onnSubmit}>
         <input type="text" placeholder="*Enter Email..." value={email} onChange={e=> setEmail(e.target.value)}/>
         <input type="password" placeholder="*Password..." value={password} onChange={e=> setPassword(e.target.value)} />
-      <button>Sign in</button>
+      <button>{loading ? 'Loading...': 'Sign in'}</button>
       </form>
       <div className="not-member">
         Not a member? <Link to='/signup'>Register Now</Link>

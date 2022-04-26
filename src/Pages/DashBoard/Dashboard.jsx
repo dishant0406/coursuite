@@ -1,13 +1,11 @@
 import React from 'react'
 import './Dashboard.css'
-import { collection, getDocs, where,query, orderBy, linit, startAfter, onSnapshot } from 'firebase/firestore'
+import '../../Components/SideBar/SideBar.css'
+import { collection,query, onSnapshot } from 'firebase/firestore'
 import { db } from '../../Components/Firebase/firebase.config'
 import Loader from '../../Components/Loader/Loader'
-import {SearchAlt} from '@styled-icons/boxicons-regular'
 import RepoCard from '../../Components/RepoCard/RepoCard'
 import Select from 'react-select';
-import useStateCallback from '../../Hooks/useStateCallback'
-import SideBar from '../../Components/SideBar/SideBar'
 import Paagination from '../../Components/Pagination/Pagination'
 
 
@@ -53,8 +51,7 @@ const Dashboard = () => {
           setLoading(false)
         })
 
-        
-          setLoading(false)
+
         
         
       }

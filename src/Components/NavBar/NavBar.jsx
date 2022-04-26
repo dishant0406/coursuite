@@ -8,8 +8,8 @@ const NavBar = () => {
   const {user, setUser} = React.useContext(UserContext)
   let auth = getAuth()
 
-  const handleClick = ()=>{
-      auth.signOut()
+  const handleClick = async ()=>{
+      await auth.signOut()
       auth = getAuth()
       setUser(null)
   }

@@ -7,11 +7,12 @@ import Loader from '../../Components/Loader/Loader'
 import RepoCard from '../../Components/RepoCard/RepoCard'
 import Select from 'react-select';
 import Paagination from '../../Components/Pagination/Pagination'
+import Error from '../../Components/Error/Error'
 
 
 const Dashboard = () => {
   const [repos, setRepos] = React.useState([]);
-  const [categories,setCategory] = React.useState([{value: '', label: 'All Category'}]);
+  const [categories,setCategory] = React.useState([{value: '', label: 'All Categories'}]);
   const [loading, setLoading] = React.useState(false);
   const [searchtitle, setTitle] = React.useState('')
   const [cat, setCat] = React.useState('')
@@ -46,7 +47,7 @@ const Dashboard = () => {
             
             return res.push({ value: doc.id, label: doc.id })
           });
-          setCategory([{value: '', label: 'All Category'}, ...res]);
+          setCategory([{value: '', label: 'All Categories'}, ...res]);
 
           setLoading(false)
         })
@@ -126,6 +127,7 @@ const Dashboard = () => {
       })}
     </div>
       <div className="repocontainer">
+        {currentPosts.length <1 && <Error/>}
         {currentPosts.map((el)=>{
           return (
             <RepoCard key={el.id} data={el.data} id={el.id}/>

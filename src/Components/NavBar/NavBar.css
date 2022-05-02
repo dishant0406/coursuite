@@ -50,7 +50,7 @@ body{
   display: none;
 }
 
-.css-b62m3t-container{
+.hidden-drp-down .css-b62m3t-container{
   display:none;
 }
 
@@ -66,7 +66,7 @@ body{
     display: none;
   }
 
-  .css-b62m3t-container{
+  .hidden-drp-down .css-b62m3t-container{
     display:block;
   }
 

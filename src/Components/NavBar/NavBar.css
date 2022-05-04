@@ -2,6 +2,7 @@
 
 body{
   font-family: 'Poppins', sans-serif;
+  overflow-y: hidden;
 }
 .nav {
   height: 50px;
@@ -59,6 +60,10 @@ body{
     position: absolute;
     right: 0px;
     top: 8px;
+  }
+
+  body{
+    overflow: auto;
   }
 
   .sidebar{

@@ -79,6 +79,7 @@ const Dashboard = () => {
 
   const handleChange = (selectedOption) => {
     setCat(selectedOption.value)
+    setCurrentPage(1)
   }
 
 

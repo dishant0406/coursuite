@@ -54,7 +54,7 @@ function closeModal() {
                 >
                   <div className="model-cont">
                 <div className='model-div-cont'>
-                  <h3 className='model-h3'>{`Are you sure you want to delete "${data.title.toUpperCase()}" !`}</h3>
+                  <h3 className='model-h3'>{`Are you sure you want to delete!`}</h3>
                   <div className="model-btn">
                   <button className='button-37' onClick={handleBtnClick}>Yes</button>
                   <button className='btn-no button-37' onClick={closeModal}>No</button>

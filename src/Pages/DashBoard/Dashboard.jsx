@@ -17,7 +17,7 @@ const Dashboard = () => {
   const [searchtitle, setTitle] = React.useState('')
   const [cat, setCat] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [postsPerPage, setPostsPerPage] = React.useState(3)
+  const [postsPerPage, setPostsPerPage] = React.useState(6)
   
   React.useEffect(() => {
 
@@ -75,22 +75,12 @@ const Dashboard = () => {
   }, [cat])
 
 
-  const options = [
-    { value: 3, label: '3' },
-    { value: 6, label: '6' },
-    { value: 9, label: '9' },
-    { value: 12, label: '12' }
-  ]
-
   
 
   const handleChange = (selectedOption) => {
     setCat(selectedOption.value)
   }
 
-  const handleCardChange = (e)=>{
-    setPostsPerPage(e.value)
-  }
 
   const paginate = (number) => {
     setCurrentPage(number);
@@ -123,8 +113,6 @@ const Dashboard = () => {
       </div>
     </div>
 
-    <Select options = {options} onChange={handleCardChange}
-        placeholder="Cards Per Page" />
       <div className="hidden-drp-down">
     {categories!=[] && <Select options = {categories} onChange={handleChange} value = {
        categories.filter(option => 
@@ -141,7 +129,7 @@ const Dashboard = () => {
     <div className="sidebar">
        {categories.map((cate)=>{
         return (
-          <div key={cate.label} onClick={()=>{setCat(cate.value)}}>{cate.label.toUpperCase()}</div>
+          <div key={cate.label} onClick={()=>{setCat(cate.value); setCurrentPage(1)}}>{cate.label.toUpperCase()}</div>
         )
       })}
     </div>

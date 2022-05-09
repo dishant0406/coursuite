@@ -13,11 +13,19 @@
   display: flex;
   justify-content: space-evenly;
   flex-wrap: wrap;
+
+
+  
+}
+.repocontwithpage{
+  display: flex;
+  flex-direction:column;
   margin-top: 2rem;
   width:1800px;
   height:60vh;
   overflow-y: scroll;
 }
+
 .btn-goto-a{
   width: 100%;
   display: flex;

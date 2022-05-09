@@ -134,6 +134,7 @@ const Dashboard = () => {
         )
       })}
     </div>
+    <div className="repocontwithpage">
       <div className="repocontainer">
         {currentPosts.length <1 && <Error/>}
         {currentPosts.map((el)=>{
@@ -142,8 +143,10 @@ const Dashboard = () => {
             )
           })}
       </div>
-      </div>
       <Paagination postsPerPage={postsPerPage} currentPage={currentPage} totalPosts={filterNames.length} paginate={paginate}/>
+      </div>
+      </div>
+      
     </div>
     </>
   )

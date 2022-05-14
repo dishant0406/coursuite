@@ -22,7 +22,7 @@ const App = () => {
   return (
     <BrowserRouter>
     <Toaster/>
-    <NavBar/>
+    {user && <NavBar/>}
     <Switch>
       <Route exact path="/">
         {user===null && <Redirect to='/signin'/>}
@@ -31,10 +31,6 @@ const App = () => {
       <Route path="/signin">
         {user===null && <SignIn/>}
         {user && <Redirect to='/'/>}
-      </Route>
-      <Route path="/signup">
-      {user===null && <SignUp/>}
-      {user && <Redirect to='/'/>}
       </Route>
       <Route path="/add">
         {user && <AddProject/>}

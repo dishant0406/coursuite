@@ -5,9 +5,17 @@ import { collection,query, onSnapshot } from 'firebase/firestore'
 import { db } from '../../Components/Firebase/firebase.config'
 import Loader from '../../Components/Loader/Loader'
 import RepoCard from '../../Components/RepoCard/RepoCard'
-import Select from 'react-select';
+import CategoryIcon from '@mui/icons-material/Category';
 import Paagination from '../../Components/Pagination/Pagination'
 import Error from '../../Components/Error/Error'
+import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import Divider from '@mui/material/Divider';
+import ListItemText from '@mui/material/ListItemText';
 
 
 const Dashboard = () => {
@@ -17,7 +25,20 @@ const Dashboard = () => {
   const [searchtitle, setTitle] = React.useState('')
   const [cat, setCat] = React.useState('')
   const [currentPage, setCurrentPage] = React.useState(1)
-  const [postsPerPage, setPostsPerPage] = React.useState(6)
+  const [postsPerPage, setPostsPerPage] = React.useState(8)
+  const [state, setState] = React.useState({
+    left: false,
+  });
+
+  const toggleDrawer = (anchor, open) => (event) => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+
+    setState({ ...state, [anchor]: open });
+  };
+
+  
   
   React.useEffect(() => {
 
@@ -93,6 +114,27 @@ const Dashboard = () => {
       setCat('')
     }
   }
+  const list = (anchor) => (
+    <Box
+      sx={{ width: anchor === 'top' || anchor === 'bottom' ? 'auto' : 250 }}
+      role="presentation"
+      onClick={toggleDrawer(anchor, false)}
+      onKeyDown={toggleDrawer(anchor, false)}
+    >
+      <List>
+        {categories.map((text) => (
+          <>
+          <ListItem key={text.label} disablePadding>
+            <ListItemButton>
+              <ListItemText primary={text.label.toUpperCase()} onClick={()=>{setCat(text.value); setCurrentPage(1)}} />
+            </ListItemButton>
+          </ListItem>
+           <Divider />
+           </>
+        ))}
+      </List>
+    </Box>
+  );
 
   if(loading){
     return (<Loader/>)
@@ -107,6 +149,9 @@ const Dashboard = () => {
 
   return (
     <>
+    <div style={{display:'flex', alignItems: 'center', justifyContent: 'center', marginTop:'1rem'}}>
+    <Button variant="contained" disableElevation startIcon={<CategoryIcon />} onClick={toggleDrawer("left", true)}>Filter Categories</Button>
+    </div>
     <div className="searchcontainer">
     <div className="containerrr">
       <div className="search-box">
@@ -114,26 +159,25 @@ const Dashboard = () => {
       </div>
     </div>
 
-      <div className="hidden-drp-down">
-    {categories!=[] && <Select options = {categories} onChange={handleChange} value = {
-       categories.filter(option => 
-          option.value === cat)
-    }/>}
-    </div>
-      
-
 
     </div>
     <div className="dash">
     
     <div className='repo'>
-    <div className="sidebar">
-       {categories.map((cate)=>{
-        return (
-          <div key={cate.label} onClick={()=>{setCat(cate.value); setCurrentPage(1)}}>{cate.label.toUpperCase()}</div>
-        )
-      })}
-    </div>
+    <Drawer
+         anchor={"left"}
+         open={state["left"]}
+         onClose={toggleDrawer("left", false)}
+         PaperProps={{
+          sx: {
+            backgroundColor: "#353535",
+            color: "white",
+            textAlign: "center"
+          }
+        }}
+       >
+         {list("left")}
+       </Drawer>
     <div className="repocontwithpage">
       <div className="repocontainer">
         {currentPosts.length <1 && <Error/>}
@@ -143,8 +187,8 @@ const Dashboard = () => {
             )
           })}
       </div>
-      <Paagination postsPerPage={postsPerPage} currentPage={currentPage} totalPosts={filterNames.length} paginate={paginate}/>
       </div>
+      <Paagination postsPerPage={postsPerPage} currentPage={currentPage} totalPosts={filterNames.length} paginate={paginate}/>
       </div>
       
     </div>

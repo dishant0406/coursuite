@@ -11,28 +11,20 @@ const onGoggleClick = async () => {
     const result = await signInWithPopup(auth, provider);
     let user = result.user;
 
-    console.log(user)
+    toast.success(`Welcome ${user.displayName}`)
+    const docRef = doc(db, 'users', user.uid)
+    const docSnap = await getDoc(docRef)
 
-    if (user.email.includes('@yellomonkey.com')) {
-      toast.success(`Welcome ${user.displayName}`)
-      const docRef = doc(db, 'users', user.uid)
-      const docSnap = await getDoc(docRef)
+    if (!docSnap.exists()) {
+      await setDoc(doc(db, 'users', user.uid), {
+        name: user.displayName,
+        email: user.email,
+        timestamp: serverTimestamp()
+      })
+    }
+    console.log('done')
 
-      if (!docSnap.exists()) {
-        await setDoc(doc(db, 'users', user.uid), {
-          name: user.displayName,
-          email: user.email,
-          timestamp: serverTimestamp()
-        })
-      }
-      console.log('done')
-    }
-    else {
-      toast.error('Only YelloMonkey Email')
-      user = null;
-      auth.signOut()
-      auth = getAuth()
-    }
+
 
 
   }

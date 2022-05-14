@@ -7,14 +7,25 @@ import {
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
 import Modal from 'react-awesome-modal';
-
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import {DotsVerticalRounded} from '@styled-icons/boxicons-regular'
 import './RepoCard.css'
-// import { LazyLoadImage } from 'react-lazy-load-image-component';
+import {UserContext} from '../../Context/context'
+
 import { doc, deleteDoc } from "firebase/firestore";
 import {db} from '../Firebase/firebase.config'
+
+
+
 const RepoCard = ({data, id}) => {
   const [modelstate, setModelState] = React.useState(false);
+  const {user, setUser} = React.useContext(UserContext)
+
   let link = '';
   if(data.link.includes('https://')){
     link = data.link
@@ -63,13 +74,9 @@ function closeModal() {
                 </div>
                 </Modal>
     </div>
-      <div className="repocard">
+      {/* <div className="repocard">
         <div className="repocard-header">
           <img src={data.imageUrl} alt="rover" />
-          {/* <LazyLoadImage
-              alt='rover'
-              effect="blur"
-              src={data.imageUrl} /> */}
         </div>
         <div className="repocard-body">
           <span className="tag tag-teal">{data.catagery}</span>
@@ -78,7 +85,6 @@ function closeModal() {
           </h4>
           <div className="btn-goto-a">
           <a href={link} target="_blank"><button className="button-24">Go to Project</button></a>
-          {/* <button className="button-24" onClick={handleDeleteClick}>Delete</button> */}
           <div>
           <Menu menuButton={<DotsVerticalRounded style={{color: 'black', width: '35px'}}/>} transition>
             <MenuItem onClick={openModal}>Delete Project</MenuItem>
@@ -86,7 +92,31 @@ function closeModal() {
         </div>
           </div>
         </div>
+      </div> */}
+      <Card variant="outlined" sx={{ width: 300, backgroundColor:'#353535', color:'#FFFFFF' }}>
+      <CardMedia
+        component="img"
+        height="145"
+        image={data.imageUrl}
+        alt={data.title}
+      />
+      
+      <CardContent>
+        <Typography gutterBottom variant="h5" component="div">
+        {data.title}
+        </Typography>
+      </CardContent>
+      <CardActions>
+      <div className="btn-goto-a">
+      <a href={link} target="_blank"><Button size="small" sx={{color: "white"}}>Download</Button></a>
+      
       </div>
+      {user.email==='dishu5570@gmail.com' && <Menu menuButton={<DotsVerticalRounded style={{color: 'white', width: '25px'}}/>} transition>
+            <MenuItem onClick={openModal}>Delete Project</MenuItem>
+        </Menu>}
+      </CardActions>
+
+    </Card>
       </div>
 
   );

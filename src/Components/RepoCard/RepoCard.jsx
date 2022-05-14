@@ -6,6 +6,7 @@ import {
 } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
+import toast from 'react-hot-toast';
 import Modal from 'react-awesome-modal';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -13,6 +14,7 @@ import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+
 import {DotsVerticalRounded} from '@styled-icons/boxicons-regular'
 import './RepoCard.css'
 import {UserContext} from '../../Context/context'
@@ -109,7 +111,7 @@ function closeModal() {
       <CardActions>
       <div className="btn-goto-a">
       <a href={link} target="_blank"><Button size="small" sx={{color: "white"}}>Download</Button></a>
-      
+      <Button onClick={()=>{toast.success('Password if required: tutflix')}} size="small" sx={{color: "white"}}>Password</Button>
       </div>
       {user.email==='dishu5570@gmail.com' && <Menu menuButton={<DotsVerticalRounded style={{color: 'white', width: '25px'}}/>} transition>
             <MenuItem onClick={openModal}>Delete Project</MenuItem>
